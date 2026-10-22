@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit tests
+        run: python3 -m unittest discover -s tests -v
+
+  # the action itself, on every runner the projects use; nothing is published
+  action:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sample release files
+        shell: bash
+        run: |
+          mkdir -p sample && cd sample
+          echo guide > Prova-1.0.0-Guida.pdf
+          echo app > prova-1.0.0
+          python3 -c "import zipfile; z = zipfile.ZipFile('prova-1.0.0-linux-x64.zip', 'w'); z.write('prova-1.0.0'); z.write('Prova-1.0.0-Guida.pdf'); z.close()" \
+            || python -c "import zipfile; z = zipfile.ZipFile('prova-1.0.0-linux-x64.zip', 'w'); z.write('prova-1.0.0'); z.write('Prova-1.0.0-Guida.pdf'); z.close()"
+      - uses: ./actions/release
+        with:
+          version: 1.0.0
+          files: sample/*.zip
+          changelog: tests/fixtures/CHANGELOG.md
+          publish: "false"

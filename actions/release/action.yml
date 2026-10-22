@@ -1,0 +1,83 @@
+name: Release
+description: >
+  Checks the release files (version in the names, PDF guide), writes short notes
+  from the changelog and attaches the files to a GitHub Release. It runs inside
+  the caller's job: no Actions artifacts. Publishes only for tags unless told otherwise.
+inputs:
+  version:
+    description: Version without the leading v (e.g. 2.9.20)
+    required: true
+  files:
+    description: Files to attach, one glob per line
+    required: true
+  changelog:
+    description: File with a "## ..." heading holding the version (e.g. "## 2.9.20 — 2026-10-22")
+    default: CHANGELOG.md
+  guide:
+    description: "inside: a PDF guide in every zip; beside: a PDF among the files (next to an APK); none"
+    default: inside
+  tag:
+    description: Release tag (default v<version>)
+    default: ""
+  title:
+    description: Release title (default "<repo> v<version>")
+    default: ""
+  prerelease:
+    description: "auto (versions with a -, like 1.13-SNAPSHOT), true or false"
+    default: auto
+  publish:
+    description: "auto (only when the workflow runs for a tag), true or false"
+    default: auto
+  replace:
+    description: "true: an existing release gets the new files and notes (snapshot builds)"
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - name: Check the files and write the notes
+      shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
+        FILES: ${{ inputs.files }}
+        CHANGELOG: ${{ inputs.changelog }}
+        GUIDE: ${{ inputs.guide }}
+      run: |
+        PY="$(command -v python3 || command -v python)"
+        "$PY" "$GITHUB_ACTION_PATH/release.py" check "$VERSION" "$GUIDE" "$RUNNER_TEMP/release-files.txt" "$FILES"
+        "$PY" "$GITHUB_ACTION_PATH/release.py" notes "$VERSION" "$GUIDE" "$CHANGELOG" "$RUNNER_TEMP/release-notes.md"
+
+    - name: Publish the GitHub Release
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
+        VERSION: ${{ inputs.version }}
+        TAG: ${{ inputs.tag }}
+        TITLE: ${{ inputs.title }}
+        PRE: ${{ inputs.prerelease }}
+        PUBLISH: ${{ inputs.publish }}
+        REPLACE: ${{ inputs.replace }}
+      run: |
+        TAG="${TAG:-v$VERSION}"
+        TITLE="${TITLE:-${GITHUB_REPOSITORY#*/} v$VERSION}"
+        if [ "$PRE" = auto ]; then case "$VERSION" in *-*) PRE=true ;; *) PRE=false ;; esac; fi
+        if [ "$PUBLISH" = auto ]; then [ "$GITHUB_REF_TYPE" = tag ] && PUBLISH=true || PUBLISH=false; fi
+        if [ "$PUBLISH" != true ]; then
+          echo "Release $TAG not published (not a tag): files and notes checked."
+          exit 0
+        fi
+        FILES=()
+        while IFS= read -r f; do FILES+=("$f"); done < "$RUNNER_TEMP/release-files.txt"
+        NOTES="$RUNNER_TEMP/release-notes.md"
+        if gh release view "$TAG" > /dev/null 2>&1; then
+          if [ "$REPLACE" != true ]; then
+            echo "::error::release $TAG already exists (replace: true updates it)"
+            exit 1
+          fi
+          gh release upload "$TAG" "${FILES[@]}" --clobber
+          gh release edit "$TAG" --title "$TITLE" --notes-file "$NOTES" --prerelease="$PRE"
+        elif [ "$PRE" = true ]; then
+          gh release create "$TAG" "${FILES[@]}" --target "$GITHUB_SHA" --title "$TITLE" --notes-file "$NOTES" --prerelease
+        else
+          gh release create "$TAG" "${FILES[@]}" --target "$GITHUB_SHA" --title "$TITLE" --notes-file "$NOTES"
+        fi

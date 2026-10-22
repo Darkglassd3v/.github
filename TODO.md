@@ -11,8 +11,8 @@ artefatti delle Actions (lo spazio si esaurisce; gli asset delle release no).
 
 ### R1 — azione `actions/release`
 - [x] RED `tests/test_release.py`: note brevi dal changelog (una riga per voce, gruppi `###`, intestazione con la versione anche dentro un titolo, versione `-SNAPSHOT` sulla sezione base, sezione mancante = errore); controllo dei file (versione nel nome, guida PDF dentro ogni zip, oppure PDF accanto all'APK, glob senza file = errore)
-- [ ] GREEN `actions/release/release.py` + `action.yml` (controlli, note, `gh release create/upload`, solo dai tag salvo `publish`)
-- [ ] CI: test e prova dell'azione su Ubuntu e Windows, senza pubblicare
+- [x] GREEN `actions/release/release.py` + `action.yml` (controlli, note, `gh release create/upload`, solo dai tag salvo `publish`)
+- [x] CI: test e prova dell'azione su Ubuntu, Windows e macOS, senza pubblicare (`.github/workflows/ci.yml`)
 - [ ] Repo pubblico `Darkglassd3v/.github`, tag `v1`
 
 ### R2 — progetti
