@@ -5,7 +5,7 @@ artefatti delle Actions (lo spazio si esaurisce; gli asset delle release no).
 
 ## In corso
 
-- [ ] `actions/release` pubblicata (repo pubblico creato), CI e tag `v1` in corso; poi dierre e openset
+- [ ] R2: dierre e openset usano `Darkglassd3v/.github/actions/release@v1`
 
 ## Da fare
 
@@ -13,7 +13,7 @@ artefatti delle Actions (lo spazio si esaurisce; gli asset delle release no).
 - [x] RED `tests/test_release.py`: note brevi dal changelog (una riga per voce, gruppi `###`, intestazione con la versione anche dentro un titolo, versione `-SNAPSHOT` sulla sezione base, sezione mancante = errore); controllo dei file (versione nel nome, guida PDF dentro ogni zip, oppure PDF accanto all'APK, glob senza file = errore)
 - [x] GREEN `actions/release/release.py` + `action.yml` (controlli, note, `gh release create/upload`, solo dai tag salvo `publish`)
 - [x] CI: test e prova dell'azione su Ubuntu, Windows e macOS, senza pubblicare (`.github/workflows/ci.yml`)
-- [ ] Repo pubblico `Darkglassd3v/.github`, tag `v1`
+- [x] Repo pubblico `Darkglassd3v/.github`, tag `v1` e `v1.0.0` (CI verde su Ubuntu, Windows, macOS)
 
 ### R2 — progetti
 - [ ] dierre: ultimo passo di `build-windows-exe.yml` con l'azione (solo lo zip, la guida è dentro; note da `docs/InventarioApp.md`)
