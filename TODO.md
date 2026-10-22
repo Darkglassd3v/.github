@@ -8,6 +8,9 @@ artefatti delle Actions (lo spazio si esaurisce; gli asset delle release no).
 - [ ] R1.1 (v1.1.0): voci su più righe e gruppi in grassetto (`**Merge**`, come nella guida di dierre)
   - [x] RED `tests/test_release.py`
   - [x] GREEN `release.py` (righe unite, gruppi in grassetto, limite a 180 caratteri), tag `v1.1.0`, `v1` spostato
+- [ ] R1.2 (v1.1.1): su Windows la console stampa in cp1252: una nota con «→» fermava l'azione (visto nel log della prova di dierre: «è» diventava «�»)
+  - [x] RED `tests/test_release.py` (`PYTHONIOENCODING=cp1252`)
+  - [ ] GREEN: stdout in UTF-8, tag `v1.1.1`, `v1` spostato
 - [ ] R2: dierre e openset usano `Darkglassd3v/.github/actions/release@v1`
 
 ## Da fare

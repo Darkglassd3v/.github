@@ -96,6 +96,24 @@ class NotesTest(unittest.TestCase):
             release.notes("## 12.0.0\n\n- x\n", "2.0.0", guide="none")
 
 
+class ConsoleTest(unittest.TestCase):
+    # Windows runners print with cp1252: a note with → must not stop the release
+    def test_notes_with_characters_outside_the_console_encoding(self):
+        import subprocess
+        d = tempfile.mkdtemp()
+        self.addCleanup(lambda: __import__("shutil").rmtree(d))
+        changelog = os.path.join(d, "CHANGELOG.md")
+        with open(changelog, "w", encoding="utf-8") as f:
+            f.write("## 1.0.0\n\n- Avvio → finestra principale più veloce.\n")
+        out = os.path.join(d, "notes.md")
+        script = os.path.join(os.path.dirname(__file__), "..", "actions", "release", "release.py")
+        env = dict(os.environ, PYTHONIOENCODING="cp1252")
+        run = subprocess.run([sys.executable, script, "notes", "1.0.0", "none", changelog, out], env=env, capture_output=True)
+        self.assertEqual(run.returncode, 0, run.stderr.decode("utf-8", "replace"))
+        with open(out, encoding="utf-8") as f:
+            self.assertIn("- Avvio → finestra principale più veloce\n", f.read())
+
+
 class CheckTest(unittest.TestCase):
     def setUp(self):
         self.dir = tempfile.mkdtemp()
