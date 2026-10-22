@@ -119,6 +119,8 @@ def main(argv):
 
 
 if __name__ == "__main__":
+    # Windows runners print with cp1252: notes in Italian (è, →) go to the log as UTF-8
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     try:
         main(sys.argv)
     except ReleaseError as e:
