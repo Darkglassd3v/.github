@@ -11,7 +11,7 @@ artefatti delle Actions (lo spazio si esaurisce; gli asset delle release no).
 - [ ] R1.2 (v1.1.1): su Windows la console stampa in cp1252: una nota con «→» fermava l'azione (visto nel log della prova di dierre: «è» diventava «�»)
   - [x] RED `tests/test_release.py` (`PYTHONIOENCODING=cp1252`)
   - [x] GREEN: stdout in UTF-8, tag `v1.1.1`, `v1` spostato
-- [ ] R2: dierre e openset usano `Darkglassd3v/.github/actions/release@v1`
+- [x] R2: dierre e openset usano `Darkglassd3v/.github/actions/release@v1` (openset PR #6 unita; dierre su `release/v2.9.20`, provata con la run 39867875177 senza pubblicare)
 
 ## Da fare
 
@@ -22,8 +22,8 @@ artefatti delle Actions (lo spazio si esaurisce; gli asset delle release no).
 - [x] Repo pubblico `Darkglassd3v/.github`, tag `v1` e `v1.0.0` (CI verde su Ubuntu, Windows, macOS)
 
 ### R2 — progetti
-- [ ] dierre: ultimo passo di `build-windows-exe.yml` con l'azione (solo lo zip, la guida è dentro; note da `docs/InventarioApp.md`)
-- [ ] openset: `release.yml` usa l'azione al posto di `scripts/release-notes.js` + `softprops/action-gh-release`
+- [x] dierre: ultimo passo di `build-windows-exe.yml` con l'azione (solo lo zip, la guida è dentro; note da `docs/InventarioApp.md`)
+- [x] openset: `release.yml` usa l'azione al posto di `scripts/release-notes.js` + `softprops/action-gh-release`
 
 ## Esclusi
 
