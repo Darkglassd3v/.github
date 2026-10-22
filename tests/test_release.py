@@ -37,6 +37,20 @@ DIERRE = """# Guida
 - Vecchio.
 """
 
+# dierre's guide: bold paragraphs as groups, items wrapped on several lines
+WRAPPED = """## Novità della versione 2.9.20
+
+**Versione e download**
+
+- La versione si vede nel nome dell'exe (`InventarioApp-2.9.20.exe`), nel titolo della finestra di avvio e in
+  questa guida, che ora è nello zip.
+- Lo zip è più leggero, da 63 a 43 MB: non contiene più WPF, che l'app non usa.
+
+**Merge**
+
+- I doppioni uguali si contano una volta.
+"""
+
 SNAPSHOT = """## 1.13
 
 - **DMX**: universi oltre il 4 corretti.
@@ -66,6 +80,13 @@ class NotesTest(unittest.TestCase):
         md = release.notes(SNAPSHOT, "1.13-SNAPSHOT", guide="beside")
         self.assertIn("- **DMX**: universi oltre il 4 corretti\n", md)
         self.assertIn("La guida PDF è accanto all'APK.", md)
+
+    def test_wrapped_items_and_bold_paragraph_groups(self):
+        md = release.notes(WRAPPED, "2.9.20", guide="inside")
+        self.assertIn("### Versione e download\n\n", md)
+        self.assertIn("### Merge\n\n- I doppioni uguali si contano una volta\n", md)
+        self.assertIn("- La versione si vede nel nome dell'exe (`InventarioApp-2.9.20.exe`), nel titolo della finestra di avvio e in questa guida, che ora è nello zip\n", md)
+        self.assertIn("- Lo zip è più leggero, da 63 a 43 MB: non contiene più WPF, che l'app non usa\n", md)
 
     def test_missing_section_is_an_error(self):
         with self.assertRaisesRegex(release.ReleaseError, "no section for 3.0.0"):

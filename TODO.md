@@ -5,6 +5,9 @@ artefatti delle Actions (lo spazio si esaurisce; gli asset delle release no).
 
 ## In corso
 
+- [ ] R1.1 (v1.1.0): voci su più righe e gruppi in grassetto (`**Merge**`, come nella guida di dierre)
+  - [x] RED `tests/test_release.py`
+  - [ ] GREEN `release.py`, tag `v1.1.0`, `v1` spostato
 - [ ] R2: dierre e openset usano `Darkglassd3v/.github/actions/release@v1`
 
 ## Da fare
