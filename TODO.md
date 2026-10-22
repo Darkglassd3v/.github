@@ -5,7 +5,7 @@ artefatti delle Actions (lo spazio si esaurisce; gli asset delle release no).
 
 ## In corso
 
-- [ ] `actions/release` pubblicata (repo pubblico creato), CI e tag `v1` in corso; poi dierre e iptv-core-suite
+- [ ] `actions/release` pubblicata (repo pubblico creato), CI e tag `v1` in corso; poi dierre e openset
 
 ## Da fare
 
@@ -17,11 +17,11 @@ artefatti delle Actions (lo spazio si esaurisce; gli asset delle release no).
 
 ### R2 — progetti
 - [ ] dierre: ultimo passo di `build-windows-exe.yml` con l'azione (solo lo zip, la guida è dentro; note da `docs/InventarioApp.md`)
-- [ ] iptv-core-suite: niente `upload-artifact` in `build.yml`; release firmata manuale con l'azione
+- [ ] openset: `release.yml` usa l'azione al posto di `scripts/release-notes.js` + `softprops/action-gh-release`
 
 ## Esclusi
 
-- artnet-android: lasciato com'è (utente, 2026-10-22)
+- artnet-android, iptv-core-suite, sciclub-donbosco e gli altri: vecchi o non servono (utente, 2026-10-22); i progetti principali sono dierre e openset
 
 ## Regole
 
