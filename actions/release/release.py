@@ -36,10 +36,10 @@ def _section(md, version):
 
 
 def _clause(text):
-    # first clause, at most ~140 characters, never ending inside `code` or *italics*
+    # first clause, at most ~180 characters, never ending inside `code` or *italics*
     c = re.split(r";\s|\.\s|\.$", text.strip())[0].strip()
-    if len(c) > 140:
-        c = re.sub(r"\s+\S*$", "", c[:140])
+    if len(c) > 180:
+        c = re.sub(r"\s+\S*$", "", c[:180])
         for mark in ("`", "*"):
             if c.count(mark) % 2:
                 c = c[: c.rindex(mark)].strip()
@@ -57,13 +57,21 @@ def _short(item):
 
 def notes(md, version, guide="inside"):
     groups = []
+    item = False  # the last line belongs to an item: indented lines continue it
     for line in _section(md, version).splitlines():
-        if line.startswith("### "):
-            groups.append([line[4:].strip(), []])
+        bold = re.fullmatch(r"\*\*(.+?)\*\*:?", line.strip())
+        if line.startswith("### ") or bold:
+            groups.append([line[4:].strip() if line.startswith("### ") else bold.group(1).strip(), []])
+            item = False
         elif line.startswith("- "):
             if not groups:
                 groups.append(["", []])
             groups[-1][1].append(line[2:].strip())
+            item = True
+        elif item and line[:1].isspace() and line.strip():
+            groups[-1][1][-1] += " " + line.strip()
+        else:
+            item = False
     parts = [(f"### {title}\n\n" if title else "") + "\n".join(f"- {_short(i)}" for i in items) for title, items in groups if items]
     if GUIDE_LINE[guide]:
         parts.append(GUIDE_LINE[guide])

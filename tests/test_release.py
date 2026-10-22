@@ -69,9 +69,9 @@ class NotesTest(unittest.TestCase):
         self.assertIn("La guida PDF è dentro ogni zip.", md)
 
     def test_long_items_are_cut(self):
-        long = "## 1.0.0\n\n- " + "parola " * 60 + "\n"
+        long = "## 1.0.0\n\n- " + "parola " * 80 + "\n"
         line = [l for l in release.notes(long, "1.0.0", guide="none").splitlines() if l.startswith("- ")][0]
-        self.assertLessEqual(len(line), 150)
+        self.assertLessEqual(len(line), 190)  # "- " + 180 characters + "…"
         self.assertTrue(line.endswith("…"))
 
     def test_version_inside_a_heading_and_snapshot_versions(self):

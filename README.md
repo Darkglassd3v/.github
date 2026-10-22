@@ -30,7 +30,8 @@ Cosa fa:
    `guide: none` non controlla.
 2. **Scrive le note brevi**: dalla sezione del changelog con la versione nel titolo
    (`## 2.9.20 — …`, `## Novità della versione 2.9.20`; per `1.13-SNAPSHOT` vale `## 1.13`),
-   una riga per voce, divise per `### Novità` / `### Correzioni`, più dove sta la guida.
+   una riga per voce (al massimo ~180 caratteri, anche se la voce va a capo), divise per
+   `### Novità` / `### Correzioni` o per paragrafi in grassetto (`**Merge**`), più dove sta la guida.
 3. **Pubblica** con `gh` solo quando il workflow gira per un tag (`publish: auto`).
    Sulle pull request fa solo i controlli. `replace: true` aggiorna una release esistente
    (build snapshot); le versioni con `-` (es. `1.13-SNAPSHOT`) sono pre-release.
