@@ -5,7 +5,7 @@ artefatti delle Actions (lo spazio si esaurisce; gli asset delle release no).
 
 ## In corso
 
-- [ ] `actions/release`: azione composita (gira nel job del progetto, niente artefatti)
+- [ ] `actions/release` pubblicata (repo pubblico creato), CI e tag `v1` in corso; poi dierre e iptv-core-suite
 
 ## Da fare
 
@@ -17,8 +17,11 @@ artefatti delle Actions (lo spazio si esaurisce; gli asset delle release no).
 
 ### R2 — progetti
 - [ ] dierre: ultimo passo di `build-windows-exe.yml` con l'azione (solo lo zip, la guida è dentro; note da `docs/InventarioApp.md`)
-- [ ] artnet-android: release con l'azione (APK + PDF accanto; la guida PDF di PocketDMX non esiste ancora)
 - [ ] iptv-core-suite: niente `upload-artifact` in `build.yml`; release firmata manuale con l'azione
+
+## Esclusi
+
+- artnet-android: lasciato com'è (utente, 2026-10-22)
 
 ## Regole
 
